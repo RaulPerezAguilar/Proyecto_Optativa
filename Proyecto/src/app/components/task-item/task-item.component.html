@@ -1,0 +1,18 @@
+<!-- Contenido de: src/app/components/task-item/task-item.component.html -->
+
+<ion-card>
+  <ion-item>
+    <ion-checkbox
+      slot="start"
+      [checked]="videojuegos.completado">
+    </ion-checkbox>
+
+    <ion-label [class.tachado]="videojuegos.plataforma">
+      {{ videojuegos.nombre }}
+    </ion-label>
+
+    <ion-button (click)="mostrarDetalles()" slot="end">
+      Ver
+    </ion-button>
+  </ion-item>
+</ion-card>
