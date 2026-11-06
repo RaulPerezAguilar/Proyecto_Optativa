@@ -1,0 +1,63 @@
+<!-- Contenido de: src/app/components/personaje-card/personaje-card.component.html -->
+
+<!-- *ngIf: solo se pinta la tarjeta si hay datos; si no, se usa la plantilla #sinDatos -->
+<ion-card
+  *ngIf="personaje; else sinDatos"
+  class="tarjeta"
+  [class.villano]="personaje.esVillano"
+  [class.favorito]="personaje.favorito"
+  [routerLink]="['/detalle', personaje.id]">
+
+  <!-- Imagen del personaje -->
+  <div class="retrato">
+    <img [src]="personaje.imagen" [alt]="personaje.nombre" />
+    <ion-badge class="insignia" [color]="personaje.esVillano ? 'danger' : 'secondary'">
+      {{ personaje.esVillano ? 'Villano' : 'Héroe' }}
+    </ion-badge>
+  </div>
+
+  <ion-card-header>
+    <ion-card-subtitle>{{ personaje.alias }}</ion-card-subtitle>
+    <!-- UpperCasePipe -->
+    <ion-card-title class="titulo-doom">{{ personaje.nombre | uppercase }}</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p class="poder">
+      <ion-icon name="flash"></ion-icon>
+      {{ personaje.poder }}
+    </p>
+    <p class="fecha">
+      <ion-icon name="calendar"></ion-icon>
+      <!-- DatePipe: "julio de 1962" (idioma registrado en main.ts) -->
+      Debut en cómic: {{ personaje.primeraAparicion | date:'MMMM yyyy' }}
+    </p>
+  </ion-card-content>
+
+  <!-- stopPropagation: pulsar aquí NO abre el detalle -->
+  <ion-item lines="none" class="acciones" (click)="$event.stopPropagation()">
+    <ion-checkbox
+      slot="start"
+      labelPlacement="end"
+      justify="start"
+      [checked]="personaje.favorito"
+      (ionChange)="cambiarFavorito()">
+      Favorito
+    </ion-checkbox>
+
+    <!-- Property binding de color según los datos -->
+    <ion-button
+      slot="end"
+      size="small"
+      [color]="personaje.esVillano ? 'danger' : 'primary'"
+      [routerLink]="['/detalle', personaje.id]">
+      Ver
+    </ion-button>
+  </ion-item>
+</ion-card>
+
+<ng-template #sinDatos>
+  <ion-card class="tarjeta">
+    <ion-card-content>Este personaje no tiene datos todavía.</ion-card-content>
+  </ion-card>
+</ng-template>

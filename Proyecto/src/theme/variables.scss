@@ -1,38 +1,90 @@
-/* Tema claro (por defecto) */
+// Tema "Doomsday": verde Latveria + oro + azul Vengadores
+// https://ionicframework.com/docs/theming/
+@use "sass:color";
+
+/* ============ TEMA CLARO (por defecto) ============ */
 :root {
-  --ion-color-primary: #1900f8;
-  --ion-color-primary-rgb: 25, 0, 248;
+  /* Fuentes (Google Fonts cargadas en index.html) */
+  --ion-font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Primario: verde Doom */
+  --ion-color-primary: #1b5e3b;
+  --ion-color-primary-rgb: 27, 94, 59;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #1600db;
-  --ion-color-primary-tint: #3115f9;
+  --ion-color-primary-shade: #185334;
+  --ion-color-primary-tint: #326e4f;
+
+  /* Secundario: oro */
+  --ion-color-secondary: #c9a227;
+  --ion-color-secondary-rgb: 201, 162, 39;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #b18f22;
+  --ion-color-secondary-tint: #ceab3d;
+
+  /* Terciario: azul Vengadores */
+  --ion-color-tertiary: #2b4c9b;
+  --ion-color-tertiary-rgb: 43, 76, 155;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #264388;
+  --ion-color-tertiary-tint: #405ea5;
 }
 
-/* Grupo de estilos oscuros reutilizable */
+/* ============ TEMA OSCURO (mixin reutilizable) ============ */
+$fondo-oscuro: #0d1410;
+$texto-oscuro: #f2efe6;
+
 @mixin dark-theme-variables {
-  --ion-color-primary: #428cff;
-  --ion-color-primary-rgb: 66, 140, 255;
-  --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3a7be0;
-  --ion-color-primary-tint: #5598ff;
+  --ion-color-primary: #3fae6f;
+  --ion-color-primary-rgb: 63, 174, 111;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #389962;
+  --ion-color-primary-tint: #52b67d;
 
-  --ion-background-color: #121212;
-  --ion-background-color-rgb: 18, 18, 18;
-  --ion-text-color: #ffffff;
-  --ion-text-color-rgb: 255, 255, 255;
-  --ion-item-background: #1e1e1e;
-  --ion-toolbar-background: #1f1f1f;
+  --ion-color-secondary: #e0bb48;
+  --ion-color-secondary-rgb: 224, 187, 72;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #c5a53f;
+  --ion-color-secondary-tint: #e3c25a;
+
+  --ion-color-tertiary: #6d8fe0;
+  --ion-color-tertiary-rgb: 109, 143, 224;
+  --ion-color-tertiary-contrast: #000000;
+  --ion-color-tertiary-contrast-rgb: 0, 0, 0;
+  --ion-color-tertiary-shade: #607ec5;
+  --ion-color-tertiary-tint: #7c9ae3;
+
+  --ion-background-color: #{$fondo-oscuro};
+  --ion-background-color-rgb: 13, 20, 16;
+  --ion-text-color: #{$texto-oscuro};
+  --ion-text-color-rgb: 242, 239, 230;
+
+  --ion-item-background: #16211b;
+  --ion-card-background: #16211b;
+  --ion-toolbar-background: #101a14;
+  --ion-border-color: #2a3a31;
+
+  /* Escala de grises que usan muchos componentes de Ionic */
+  @for $i from 1 through 19 {
+    $paso: $i * 50;
+    --ion-background-color-step-#{$paso}: #{color.mix($texto-oscuro, $fondo-oscuro, $i * 5%)};
+    --ion-text-color-step-#{$paso}: #{color.mix($fondo-oscuro, $texto-oscuro, $i * 5%)};
+    --ion-color-step-#{$paso}: #{color.mix($texto-oscuro, $fondo-oscuro, $i * 5%)};
+  }
 }
 
-/* Automático (sistema) */
+/* Automático: si el sistema/navegador está en oscuro */
 @media (prefers-color-scheme: dark) {
   body {
     @include dark-theme-variables;
   }
 }
 
-/* Manual (clase .dark) */
+/* Manual: interruptor de la página de Ajustes (clase .dark en el body) */
 body.dark {
   @include dark-theme-variables;
 }

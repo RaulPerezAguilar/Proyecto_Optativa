@@ -1,0 +1,32 @@
+.ficha {
+  border-top: 5px solid var(--ion-color-primary);
+
+  &.villano {
+    border-top-color: var(--ion-color-danger);
+  }
+
+  ion-img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+  }
+}
+
+.insignias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.descripcion {
+  font-size: 1.05em;
+  line-height: 1.5;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}

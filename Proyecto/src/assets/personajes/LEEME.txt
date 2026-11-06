@@ -1,0 +1,9 @@
+IMÁGENES DE LOS PERSONAJES
+==========================
+Las fichas .svg de esta carpeta son provisionales (iniciales + colores del bando).
+
+Para poner imágenes reales:
+1. Copia aquí tus imágenes, por ejemplo: thor.jpg, doom.jpg, capitan-america.jpg...
+2. Abre src/app/services/personajes.service.ts
+3. Cambia la propiedad "imagen" de cada personaje, por ejemplo:
+      imagen: 'assets/personajes/thor.jpg',

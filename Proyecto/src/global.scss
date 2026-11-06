@@ -35,3 +35,16 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* ============ Estilos propios: tema Doomsday ============ */
+
+/* Títulos con la fuente Cinzel (Google Fonts, ver index.html) */
+.titulo-doom {
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
+}
+
+ion-card-title,
+ion-list-header ion-label {
+  font-family: 'Cinzel', Georgia, serif;
+}

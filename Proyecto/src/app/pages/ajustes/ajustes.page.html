@@ -1,24 +1,49 @@
+<!-- Contenido de: src/app/pages/ajustes/ajustes.page.html -->
+
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Ajustes</ion-title>
-  </ion-toolbar>
+  <app-header titulo="Ajustes" [mostrarAtras]="true"></app-header>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <!-- Header colapsable para iOS -->
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Ajustes</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <ion-list-header>Apariencia</ion-list-header>
+  <ion-list [inset]="true">
+    <ion-list-header>
+      <ion-label>Apariencia</ion-label>
+    </ion-list-header>
     <ion-item>
-      <ion-label>Modo Oscuro</ion-label>
-      <ion-toggle [(ngModel)]="modoOscuro" (ionChange)="cambiarModoOscuro()"></ion-toggle>
+      <ion-icon slot="start" name="moon" color="primary"></ion-icon>
+      <!-- Enlazamos el toggle con una variable y escuchamos el cambio -->
+      <ion-toggle [(ngModel)]="modoOscuro" (ionChange)="cambiarModoOscuro()">
+        Modo Oscuro
+      </ion-toggle>
     </ion-item>
   </ion-list>
+
+  <ion-list [inset]="true">
+    <ion-list-header>
+      <ion-label>Perfil</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-icon slot="start" name="person-circle" color="secondary"></ion-icon>
+      <ion-input
+        label="Tu nombre"
+        labelPlacement="floating"
+        placeholder="Ej: Raúl"
+        [(ngModel)]="nombreUsuario">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding-horizontal">
+    <ion-button expand="block" (click)="guardarNombre()">
+      <ion-icon slot="start" name="save"></ion-icon>
+      Guardar nombre
+    </ion-button>
+  </div>
 </ion-content>

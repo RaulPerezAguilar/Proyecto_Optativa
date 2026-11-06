@@ -1,80 +1,138 @@
 <!-- Contenido de: src/app/home/home.page.html -->
 
-<!-- La cabecera principal, visible en la parte superior de la pantalla -->
+<!-- Cabecera principal con nuestro componente app-header -->
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title style="font-family: 'Courier New', Courier, monospace; font-size: x-large;">
-      Lista de videojuegos pendientes
-    </ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button routerLink="/ajustes">
-        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <app-header
+    titulo="Avengers: Doomsday"
+    subtitulo="Guía de personajes"
+    [mostrarAjustes]="true">
+  </app-header>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- Esta segunda cabecera crea el efecto de título grande que se encoge al hacer scroll -->
+  <!-- Título grande que se encoge al hacer scroll (iOS) -->
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">
-        <i class="bi bi-joystick"></i>
-        Lista de videojuegos pendientes
-      </ion-title>
+      <ion-title size="large" class="titulo-doom">Doomsday</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- Directiva *ngIf: este div solo existirá en el DOM si la condición es verdadera -->
-  <div *ngIf="listaDeTareas.length === 0" class="mensaje-vacio">
-    <p>¡Enhorabuena!</p>
-    <p>No tienes videojuegos pendientes.</p>
-  </div>
+  <!-- Saludo personalizado (nombre guardado en Ajustes con Ionic Storage) -->
+  <section class="bienvenida ion-padding">
+    <h2 class="titulo-doom">Hola, {{ nombreUsuario || 'recluta' }}</h2>
+    <p>
+      Doom se acerca. Tienes <strong>{{ personajes.length }}</strong> personajes listos
+      y <strong>{{ totalFavoritos }}</strong> marcados como favoritos.
+    </p>
+  </section>
 
-  <!-- 
-    Directiva *ngFor: este es el bucle. 
-    - Por cada objeto 'tarea' que haya en el array 'listaDeTareas'...
-    - ...Angular creará una instancia de nuestro componente <app-task-item>.
-  -->
-  <ion-grid>
+  <!-- ====== SKELETONS: se ven los 2 primeros segundos ====== -->
+  <ion-grid *ngIf="cargando">
     <ion-row>
-      <ion-col
-        *ngFor="let nombre of listaDeTareas"
-        size="6"
-        size-md="4"
-        size-lg="3">
-        <app-task-item [videojuegos]="nombre"></app-task-item>
+      <ion-col size="12" size-sm="6" size-lg="4" *ngFor="let i of [1, 2, 3, 4, 5, 6]">
+        <ion-card>
+          <ion-skeleton-text [animated]="true" class="skeleton-imagen"></ion-skeleton-text>
+          <ion-card-header>
+            <ion-skeleton-text [animated]="true" style="width: 45%"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 75%; height: 22px"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+          </ion-card-header>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-  
-  
-  <ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-title>
-        Perfil de Usuario
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <!-- Aquí empieza nuestro contenido personalizado -->
-  <!-- Al añadir .ion-align-items-center a la fila, centramos verticalmente ambas columnas -->
-<ion-row class="ion-align-items-center">
-  <!-- Columna de la imagen -->
-  <ion-col size="12" size-md="4">
-    <img src="https://tse3.mm.bing.net/th/id/OIP._anxl2wqCtJStS2ZJg6nLQHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Avatar de usuario" style="border-radius: 8px;"/>
-  </ion-col>
+  <!-- Lista vacía -->
+  <div *ngIf="!cargando && personajes.length === 0" class="mensaje-vacio ion-padding ion-text-center">
+    <p>No queda nadie en pie.</p>
+    <p>Recluta un personaje con el formulario de abajo.</p>
+  </div>
 
-  <!-- Columna de texto -->
-  <ion-col size="12" size-md="8">
-    <div class="ion-text-center">
-      <p>Este es el texto descriptivo del perfil. Ahora está perfectamente centrado.</p>
-      <ion-button>Contactar</ion-button>
-    </div>
-  </ion-col>
-</ion-row>
+  <!-- ====== REJILLA DE PERSONAJES (grid responsivo) ====== -->
+  <!-- Móvil: 1 columna · Tablet: 2 · Escritorio: 3 -->
+  <ion-grid #rejilla *ngIf="!cargando">
+    <ion-row>
+      <ion-col *ngFor="let p of personajes" size="12" size-sm="6" size-lg="4">
+        <app-personaje-card
+          [personaje]="p"
+          (favoritoCambiado)="cambiarFavorito($event)">
+        </app-personaje-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <!-- ====== FORMULARIO: reclutar personaje ====== -->
+  <ion-list [inset]="true" class="formulario">
+    <ion-list-header>
+      <ion-label class="titulo-doom">Reclutar un personaje</ion-label>
+    </ion-list-header>
 
+    <ion-item>
+      <ion-input
+        label="Nombre"
+        labelPlacement="floating"
+        placeholder="Ej: Hulk"
+        [(ngModel)]="nuevoNombre">
+      </ion-input>
+    </ion-item>
 
+    <ion-item>
+      <ion-input
+        label="Alias"
+        labelPlacement="floating"
+        placeholder="Ej: Bruce Banner"
+        [(ngModel)]="nuevoAlias">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        label="Poder principal"
+        labelPlacement="floating"
+        placeholder="Ej: Fuerza gamma"
+        [(ngModel)]="nuevoPoder">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select label="Bando" interface="popover" [(ngModel)]="nuevoBando">
+        <ion-select-option *ngFor="let b of bandos" [value]="b">{{ b }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding-horizontal">
+    <ion-button expand="block" color="secondary" (click)="guardarPersonaje()">
+      <ion-icon slot="start" name="add-circle"></ion-icon>
+      Guardar personaje
+    </ion-button>
+  </div>
+
+  <!-- ====== PERFIL DE USUARIO ====== -->
+  <ion-grid class="perfil">
+    <ion-row class="ion-align-items-center">
+      <!-- Columna de la imagen -->
+      <ion-col size="12" size-md="4">
+        <img
+          class="poster"
+          src="https://tse3.mm.bing.net/th/id/OIP._anxl2wqCtJStS2ZJg6nLQHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+          alt="Póster de Avengers: Doomsday" />
+      </ion-col>
+
+      <!-- Columna de texto: alineada con utilidades Flexbox -->
+      <ion-col size="12" size-md="8">
+        <div class="ion-display-flex ion-flex-direction-column ion-justify-content-center ion-align-items-center ion-text-center columna-perfil">
+          <ion-avatar class="avatar">
+            <img src="assets/personajes/desconocido.svg" alt="Avatar de usuario" />
+          </ion-avatar>
+          <h2 class="titulo-doom">{{ nombreUsuario || 'Recluta anónimo' }}</h2>
+          <p>Fan de Marvel preparándose para el Día del Juicio Final.</p>
+          <ion-button routerLink="/ajustes" fill="outline">
+            <ion-icon slot="start" name="create"></ion-icon>
+            Editar perfil
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

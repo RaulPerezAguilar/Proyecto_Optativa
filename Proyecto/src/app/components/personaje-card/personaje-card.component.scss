@@ -1,0 +1,71 @@
+.tarjeta {
+  margin: 8px 4px;
+  height: calc(100% - 16px);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border-top: 4px solid var(--ion-color-primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Estilos dinámicos con [class.villano] y [class.favorito] */
+.tarjeta.villano {
+  border-top-color: var(--ion-color-danger);
+
+  ion-card-title {
+    color: var(--ion-color-danger);
+  }
+}
+
+.tarjeta.favorito {
+  box-shadow: 0 0 0 2px var(--ion-color-secondary);
+}
+
+.retrato {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #0d1410;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .insignia {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+ion-card-content {
+  flex: 1;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0;
+  }
+
+  ion-icon {
+    color: var(--ion-color-secondary);
+  }
+}
+
+.fecha {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.acciones {
+  --background: transparent;
+}

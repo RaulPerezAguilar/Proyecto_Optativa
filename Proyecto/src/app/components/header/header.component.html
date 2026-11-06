@@ -1,0 +1,20 @@
+<!-- Contenido de: src/app/components/header/header.component.html -->
+<!-- Se usa dentro de <ion-header> en cada página -->
+
+<ion-toolbar color="primary">
+  <ion-buttons slot="start" *ngIf="mostrarAtras">
+    <ion-back-button defaultHref="/home" text="Volver"></ion-back-button>
+  </ion-buttons>
+
+  <ion-title>
+    <!-- UpperCasePipe: el título siempre en mayúsculas -->
+    <span class="titulo-doom">{{ titulo | uppercase }}</span>
+    <span class="subtitulo" *ngIf="subtitulo">{{ subtitulo }}</span>
+  </ion-title>
+
+  <ion-buttons slot="end" *ngIf="mostrarAjustes">
+    <ion-button routerLink="/ajustes" aria-label="Ajustes">
+      <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
